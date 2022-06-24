@@ -34,6 +34,8 @@ public class UtenteDTO {
 	@Size(min = 3, max = 15, message = "Il valore inserito '${validatedValue}' deve essere lungo tra {min} e {max} caratteri")
 	private String username;
 
+	private String password;
+
 	private Date dataRegistrazione;
 
 	private StatoUtente stato;
@@ -45,8 +47,8 @@ public class UtenteDTO {
 	private Long[] ruoliIds;
 
 	public Utente buildUtenteModel(boolean includeIdRoles) {
-		Utente result = Utente.builder().id(this.id).username(this.username).nome(this.nome).cognome(this.cognome)
-				.dataRegistrazione(this.dataRegistrazione).stato(this.stato)
+		Utente result = Utente.builder().id(this.id).username(this.username).password(this.password).nome(this.nome)
+				.cognome(this.cognome).dataRegistrazione(this.dataRegistrazione).stato(this.stato)
 				.esperienzaAccumulata(this.esperienzaAccumulata).creditoAccumulato(this.creditoAccumulato).build();
 		if (includeIdRoles && ruoliIds != null)
 			result.setRuoli(Arrays.asList(ruoliIds).stream().map(id -> Ruolo.builder().id(id).build())
@@ -58,7 +60,8 @@ public class UtenteDTO {
 	// niente password...
 	public static UtenteDTO buildUtenteDTOFromModel(Utente utenteModel) {
 		UtenteDTO result = UtenteDTO.builder().id(utenteModel.getId()).username(utenteModel.getUsername())
-				.nome(utenteModel.getNome()).cognome(utenteModel.getCognome()).stato(utenteModel.getStato()).build();
+				.password(utenteModel.getPassword()).nome(utenteModel.getNome()).cognome(utenteModel.getCognome())
+				.stato(utenteModel.getStato()).build();
 
 		if (!utenteModel.getRuoli().isEmpty())
 			result.ruoliIds = utenteModel.getRuoli().stream().map(r -> r.getId()).collect(Collectors.toList())

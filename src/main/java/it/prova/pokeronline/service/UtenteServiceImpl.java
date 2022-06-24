@@ -50,11 +50,11 @@ public class UtenteServiceImpl implements UtenteService {
 	}
 
 	@Transactional
-	public void inserisciNuovo(Utente utenteInstance) {
+	public Utente inserisciNuovo(Utente utenteInstance) {
 		utenteInstance.setStato(StatoUtente.CREATO);
 		utenteInstance.setPassword(passwordEncoder.encode(utenteInstance.getPassword()));
 		utenteInstance.setDataRegistrazione(new Date());
-		repository.save(utenteInstance);
+		return repository.save(utenteInstance);
 	}
 
 	@Transactional
