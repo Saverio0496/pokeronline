@@ -19,7 +19,6 @@ public interface UtenteRepository extends CrudRepository<Utente, Long> {
 
 	Utente findByUsernameAndPassword(String username, String password);
 
-	// caricamento eager, ovviamente si può fare anche con jpql
 	@EntityGraph(attributePaths = { "ruoli" })
 	Utente findByUsernameAndPasswordAndStato(String username, String password, StatoUtente stato);
 }

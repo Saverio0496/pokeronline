@@ -32,9 +32,14 @@ public class PokeronlineApplication implements CommandLineRunner {
 					.inserisciNuovo(Ruolo.builder().descrizione("Administrator").codice(Ruolo.ROLE_ADMIN).build());
 		}
 
-		if (ruoloServiceInstance.cercaPerDescrizioneECodice("Classic User", Ruolo.ROLE_PLAYER) == null) {
+		if (ruoloServiceInstance.cercaPerDescrizioneECodice("Player", Ruolo.ROLE_PLAYER) == null) {
 			ruoloServiceInstance
-					.inserisciNuovo(Ruolo.builder().descrizione("Classic User").codice(Ruolo.ROLE_PLAYER).build());
+					.inserisciNuovo(Ruolo.builder().descrizione("Player").codice(Ruolo.ROLE_PLAYER).build());
+		}
+
+		if (ruoloServiceInstance.cercaPerDescrizioneECodice("Special Player", Ruolo.ROLE_SPECIAL_PLAYER) == null) {
+			ruoloServiceInstance.inserisciNuovo(
+					Ruolo.builder().descrizione("Special Player").codice(Ruolo.ROLE_SPECIAL_PLAYER).build());
 		}
 
 		if (utenteServiceInstance.findByUsername("admin") == null) {
@@ -57,7 +62,7 @@ public class PokeronlineApplication implements CommandLineRunner {
 			Utente specialPlayer = Utente.builder().username("specialplayer").password("specialplayer").nome("Lorenzo")
 					.cognome("Mago").dataRegistrazione(new Date()).build();
 			specialPlayer.getRuoli()
-					.add(ruoloServiceInstance.cercaPerDescrizioneECodice("Special Player", Ruolo.ROLE_PLAYER));
+					.add(ruoloServiceInstance.cercaPerDescrizioneECodice("Special Player", Ruolo.ROLE_SPECIAL_PLAYER));
 			utenteServiceInstance.inserisciNuovo(specialPlayer);
 		}
 	}
