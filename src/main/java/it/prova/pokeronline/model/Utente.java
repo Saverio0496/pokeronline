@@ -42,7 +42,7 @@ public class Utente {
 	@Column(name = "password")
 	private String password;
 	@Column(name = "dataregistrazione")
-	private Date dateRegistrazione;
+	private Date dataRegistrazione;
 	// se non uso questa annotation viene gestito come un intero
 	@Enumerated(EnumType.STRING)
 	private StatoUtente stato;
