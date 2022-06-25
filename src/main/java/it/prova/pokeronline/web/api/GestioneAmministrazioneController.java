@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import it.prova.pokeronline.dto.UtenteDTO;
-import it.prova.pokeronline.model.StatoUtente;
 import it.prova.pokeronline.model.Utente;
 import it.prova.pokeronline.service.UtenteService;
 import it.prova.pokeronline.web.api.exception.IdNotNullForInsertException;
@@ -82,7 +81,6 @@ public class GestioneAmministrazioneController {
 
 		if (utente == null)
 			throw new UtenteNotFoundException("Utente not found con id: " + id);
-		utente.setStato(StatoUtente.DISABILITATO);
 		utenteService.aggiorna(utente);
 	}
 
