@@ -3,6 +3,7 @@ package it.prova.pokeronline.repository.tavolo;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.EntityGraph;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 import it.prova.pokeronline.model.Tavolo;
@@ -16,5 +17,8 @@ public interface TavoloRepository extends CrudRepository<Tavolo, Long>, CustomTa
 	Tavolo findByDenominazione(String denominazione);
 
 	Tavolo findByIdAndUtenteCreazione(Long id, Utente utenteCreazione);
+	
+	@Query("from Tavolo t left join fetch t.giocatori where t.id=?1")
+	Tavolo findByIdEagerGiocatori(Long idTavolo);
 
 }

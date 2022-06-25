@@ -9,10 +9,11 @@ import org.springframework.transaction.annotation.Transactional;
 import it.prova.pokeronline.model.Tavolo;
 import it.prova.pokeronline.model.Utente;
 import it.prova.pokeronline.repository.tavolo.TavoloRepository;
+import it.prova.pokeronline.web.api.exception.TavoloAncoraConGiocatoriException;
 
 @Service
 public class TavoloServiceImpl implements TavoloService {
-	
+
 	@Autowired
 	TavoloRepository tavoloRepository;
 
@@ -32,8 +33,13 @@ public class TavoloServiceImpl implements TavoloService {
 	}
 
 	@Transactional(readOnly = true)
-	public Tavolo caricaSingoloTavoloPerLoSpecialPlayer(Long id,Utente utente) {
-		return tavoloRepository.findByIdAndUtenteCreazione(id,utente);
+	public Tavolo caricaSingoloTavoloPerLoSpecialPlayer(Long id, Utente utente) {
+		return tavoloRepository.findByIdAndUtenteCreazione(id, utente);
+	}
+	
+	@Transactional(readOnly = true)
+	public Tavolo caricaSingoloTavoloConGiocatori(Long id) {
+		return tavoloRepository.findByIdEagerGiocatori(id);
 	}
 
 	@Transactional
@@ -47,14 +53,19 @@ public class TavoloServiceImpl implements TavoloService {
 	}
 
 	@Transactional
-	public void rimuoviPerId(Tavolo tavoloInstance) {
+	public void rimuovi(Tavolo tavoloInstance) {
+		if (!tavoloInstance.getGiocatori().isEmpty()) {
+			throw new TavoloAncoraConGiocatoriException(
+					"Impossibile eliminare il tavolo perchè ci sono ancora giocatori!");
+		}
+		tavoloRepository.delete(tavoloInstance);
 	}
 
 	@Transactional(readOnly = true)
 	public List<Tavolo> findByExample(Tavolo example, Utente utente) {
 		return tavoloRepository.findByExample(example, utente);
 	}
-	
+
 	@Transactional
 	public Tavolo findByDenominazione(String denominazione) {
 		return tavoloRepository.findByDenominazione(denominazione);

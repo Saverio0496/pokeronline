@@ -14,12 +14,14 @@ public interface TavoloService {
 	Tavolo caricaSingoloTavolo(Long id);
 
 	Tavolo caricaSingoloTavoloPerLoSpecialPlayer(Long id, Utente utente);
+	
+	Tavolo caricaSingoloTavoloConGiocatori(Long id);
 
 	Tavolo aggiorna(Tavolo tavoloInstance);
 
 	Tavolo inserisciNuovo(Tavolo tavoloInstance);
 
-	void rimuoviPerId(Tavolo tavoloInstance);
+	void rimuovi(Tavolo tavoloInstance);
 
 	List<Tavolo> findByExample(Tavolo example, Utente utente);
 
