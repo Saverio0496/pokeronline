@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -23,6 +24,7 @@ import it.prova.pokeronline.service.TavoloService;
 import it.prova.pokeronline.service.UtenteService;
 import it.prova.pokeronline.web.api.exception.IdNotNullForInsertException;
 import it.prova.pokeronline.web.api.exception.TavoloNotFoundException;
+import it.prova.pokeronline.web.api.exception.UtenteCreazioneUgualeAlPrecedenteException;
 
 @RestController
 @RequestMapping("/api/gestioneTavolo")
@@ -92,6 +94,24 @@ public class GestioneTavoloController {
 			throw new TavoloNotFoundException("Tavolo not found con id: " + id);
 
 		tavoloService.rimuovi(tavoloInstance);
+	}
+
+	@PutMapping("/{id}")
+	public TavoloDTO update(@Valid @RequestBody TavoloDTO tavoloInput, @PathVariable(required = true) Long id) {
+		Tavolo tavolo = tavoloService.caricaSingoloTavoloEager(id);
+
+		if (tavolo == null)
+			throw new TavoloNotFoundException("Tavolo not found con id: " + id);
+
+		// Per verificare il punto 3, confrontiamo l' id del utenteCreazione del tavolo
+		// caricato dal DB e l' id del utenteCreazione del tavoloInput
+		if (tavolo.getUtenteCreazione().getId() != tavoloInput.getUtenteCreazione().getId())
+			throw new UtenteCreazioneUgualeAlPrecedenteException(
+					"Impossibile modificare l'utente creazione perchè deve essere sempre uguale a quello già inserito!");
+
+		tavoloInput.setId(id);
+		Tavolo tavoloAggiornato = tavoloService.aggiorna(tavoloInput.buildTavoloModel(false), tavolo);
+		return TavoloDTO.buildTavoloDTOFromModel(tavoloAggiornato);
 	}
 
 }

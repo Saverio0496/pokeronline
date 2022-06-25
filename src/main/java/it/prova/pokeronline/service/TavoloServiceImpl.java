@@ -36,15 +36,24 @@ public class TavoloServiceImpl implements TavoloService {
 	public Tavolo caricaSingoloTavoloPerLoSpecialPlayer(Long id, Utente utente) {
 		return tavoloRepository.findByIdAndUtenteCreazione(id, utente);
 	}
-	
+
 	@Transactional(readOnly = true)
 	public Tavolo caricaSingoloTavoloConGiocatori(Long id) {
 		return tavoloRepository.findByIdEagerGiocatori(id);
 	}
+	
+	@Transactional(readOnly = true)
+	public Tavolo caricaSingoloTavoloEager(Long id) {
+		return tavoloRepository.findByIdEager(id);
+	}
 
 	@Transactional
-	public Tavolo aggiorna(Tavolo tavoloInstance) {
-		return null;
+	public Tavolo aggiorna(Tavolo tavoloInstance, Tavolo tavoloCaricato) {
+		if (!tavoloCaricato.getGiocatori().isEmpty()) {
+			throw new TavoloAncoraConGiocatoriException(
+					"Impossibile aggiornare il tavolo perchè ci sono ancora giocatori!");
+		}
+		return tavoloRepository.save(tavoloInstance);
 	}
 
 	@Transactional
