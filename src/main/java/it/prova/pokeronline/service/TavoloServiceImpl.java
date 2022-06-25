@@ -23,22 +23,17 @@ public class TavoloServiceImpl implements TavoloService {
 
 	@Transactional(readOnly = true)
 	public List<Tavolo> listAllTavoliCreatiDaUtente(Utente utente) {
-		return (List<Tavolo>) tavoloRepository.findAllTavoliByUtente(utente);
+		return (List<Tavolo>) tavoloRepository.findAllByUtenteCreazione_Id(utente.getId());
 	}
 
 	@Transactional(readOnly = true)
 	public Tavolo caricaSingoloTavolo(Long id) {
-		return null;
+		return tavoloRepository.findById(id).orElse(null);
 	}
 
 	@Transactional(readOnly = true)
-	public Tavolo caricaSingoloTavoloConGiocatori(Long id) {
-		return null;
-	}
-
-	@Transactional(readOnly = true)
-	public Tavolo caricaSingoloTavoloConUtente(Long id, Utente utente) {
-		return null;
+	public Tavolo caricaSingoloTavoloPerLoSpecialPlayer(Long id,Utente utente) {
+		return tavoloRepository.findByIdAndUtenteCreazione(id,utente);
 	}
 
 	@Transactional

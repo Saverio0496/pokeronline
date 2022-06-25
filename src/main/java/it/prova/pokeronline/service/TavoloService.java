@@ -13,9 +13,7 @@ public interface TavoloService {
 
 	Tavolo caricaSingoloTavolo(Long id);
 
-	Tavolo caricaSingoloTavoloConGiocatori(Long id);
-	
-	Tavolo caricaSingoloTavoloConUtente( Long id, Utente utente);
+	Tavolo caricaSingoloTavoloPerLoSpecialPlayer(Long id, Utente utente);
 
 	Tavolo aggiorna(Tavolo tavoloInstance);
 

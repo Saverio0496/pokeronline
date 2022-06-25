@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -52,6 +53,14 @@ public class GestioneTavoloController {
 		return TavoloDTO.buildTavoloDTOFromModel(tavoloInserito);
 
 	}
-	
-	
+
+	@GetMapping("/{id}")
+	public TavoloDTO findById(@PathVariable(value = "id", required = true) long id) {
+		if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
+				.anyMatch(r -> r.getAuthority().equals("ROLE_ADMIN"))) {
+			return TavoloDTO.buildTavoloDTOFromModel(tavoloService.caricaSingoloTavolo(id));
+		}
+		return TavoloDTO.buildTavoloDTOFromModel(tavoloService.caricaSingoloTavoloPerLoSpecialPlayer(id,
+				utenteService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName())));
+	}
 }

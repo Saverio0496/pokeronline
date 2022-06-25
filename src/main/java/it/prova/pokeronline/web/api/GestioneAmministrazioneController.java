@@ -81,6 +81,7 @@ public class GestioneAmministrazioneController {
 
 		if (utente == null)
 			throw new UtenteNotFoundException("Utente not found con id: " + id);
+		utenteService.rimuovi(utente);
 		utenteService.aggiorna(utente);
 	}
 
