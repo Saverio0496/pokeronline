@@ -51,8 +51,8 @@ public class TavoloServiceImpl implements TavoloService {
 	}
 
 	@Transactional(readOnly = true)
-	public List<Tavolo> findByExample(Tavolo example) {
-		return null;
+	public List<Tavolo> findByExample(Tavolo example, Utente utente) {
+		return tavoloRepository.findByExample(example, utente);
 	}
 	
 	@Transactional

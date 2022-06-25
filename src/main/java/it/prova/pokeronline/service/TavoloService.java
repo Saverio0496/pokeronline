@@ -21,7 +21,7 @@ public interface TavoloService {
 
 	void rimuoviPerId(Tavolo tavoloInstance);
 
-	List<Tavolo> findByExample(Tavolo example);
+	List<Tavolo> findByExample(Tavolo example, Utente utente);
 
 	Tavolo findByDenominazione(String denominazione);
 

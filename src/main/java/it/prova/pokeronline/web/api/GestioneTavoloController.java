@@ -63,4 +63,17 @@ public class GestioneTavoloController {
 		return TavoloDTO.buildTavoloDTOFromModel(tavoloService.caricaSingoloTavoloPerLoSpecialPlayer(id,
 				utenteService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName())));
 	}
+	
+	@PostMapping("/search")
+	public List<TavoloDTO> findByExample(@RequestBody TavoloDTO exampleDTO) {
+
+		if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
+				.anyMatch(r -> r.getAuthority().equals("ROLE_ADMIN"))) {
+			return TavoloDTO.createTavoloDTOListFromModelList(tavoloService.findByExample(exampleDTO.buildTavoloModel(true), null));
+
+		}
+		return TavoloDTO.createTavoloDTOListFromModelList(tavoloService.findByExample(exampleDTO.buildTavoloModel(true),
+				utenteService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName())));
+
+	}
 }

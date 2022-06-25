@@ -8,7 +8,7 @@ import org.springframework.data.repository.CrudRepository;
 import it.prova.pokeronline.model.Tavolo;
 import it.prova.pokeronline.model.Utente;
 
-public interface TavoloRepository extends CrudRepository<Tavolo, Long> {
+public interface TavoloRepository extends CrudRepository<Tavolo, Long>, CustomTavoloRepository {
 
 	@EntityGraph(attributePaths = { "giocatori", "utenteCreazione" })
 	List<Tavolo> findAllByUtenteCreazione_Id(Long id);
