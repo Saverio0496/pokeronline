@@ -61,7 +61,9 @@ public class UtenteDTO {
 	public static UtenteDTO buildUtenteDTOFromModel(Utente utenteModel) {
 		UtenteDTO result = UtenteDTO.builder().id(utenteModel.getId()).username(utenteModel.getUsername())
 				.password(utenteModel.getPassword()).nome(utenteModel.getNome()).cognome(utenteModel.getCognome())
-				.stato(utenteModel.getStato()).build();
+				.stato(utenteModel.getStato()).dataRegistrazione(utenteModel.getDataRegistrazione())
+				.esperienzaAccumulata(utenteModel.getEsperienzaAccumulata())
+				.creditoAccumulato(utenteModel.getCreditoAccumulato()).build();
 
 		if (!utenteModel.getRuoli().isEmpty())
 			result.ruoliIds = utenteModel.getRuoli().stream().map(r -> r.getId()).collect(Collectors.toList())
