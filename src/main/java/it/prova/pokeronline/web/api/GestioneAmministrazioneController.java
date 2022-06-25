@@ -17,9 +17,6 @@ import it.prova.pokeronline.model.Utente;
 import it.prova.pokeronline.service.UtenteService;
 import it.prova.pokeronline.web.api.exception.IdNotNullForInsertException;
 import it.prova.pokeronline.web.api.exception.UtenteNotFoundException;
-import it.prova.raccoltafilmspringrest.dto.FilmDTO;
-import it.prova.raccoltafilmspringrest.model.Film;
-import it.prova.raccoltafilmspringrest.web.api.exception.FilmNotFoundException;
 
 @RestController
 @RequestMapping("/api/gestioneAmministrazione")
@@ -30,7 +27,7 @@ public class GestioneAmministrazioneController {
 
 	@GetMapping
 	public List<UtenteDTO> getAll() {
-		return UtenteDTO.createFilmDTOListFromModelList(utenteService.listAllUtenti());
+		return UtenteDTO.createUtenteDTOListFromModelList(utenteService.listAllUtenti());
 	}
 
 	// gli errori di validazione vengono mostrati con 400 Bad Request ma
@@ -54,6 +51,11 @@ public class GestioneAmministrazioneController {
 			throw new UtenteNotFoundException("Utente not found con id: " + id);
 
 		return UtenteDTO.buildUtenteDTOFromModel(utente);
+	}
+
+	@PostMapping("/search")
+	public List<UtenteDTO> search(@RequestBody UtenteDTO example) {
+		return UtenteDTO.createUtenteDTOListFromModelList(utenteService.findByExample(example.buildUtenteModel(true)));
 	}
 
 }

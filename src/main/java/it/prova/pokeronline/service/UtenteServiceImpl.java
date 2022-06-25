@@ -64,8 +64,7 @@ public class UtenteServiceImpl implements UtenteService {
 
 	@Transactional(readOnly = true)
 	public List<Utente> findByExample(Utente example) {
-		// TODO Da implementare
-		return listAllUtenti();
+		return repository.findByExample(example);
 	}
 
 	@Transactional(readOnly = true)

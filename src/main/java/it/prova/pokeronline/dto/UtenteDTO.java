@@ -70,7 +70,7 @@ public class UtenteDTO {
 		return result;
 	}
 
-	public static List<UtenteDTO> createFilmDTOListFromModelList(List<Utente> modelListInput) {
+	public static List<UtenteDTO> createUtenteDTOListFromModelList(List<Utente> modelListInput) {
 		return modelListInput.stream().map(utenteEntity -> {
 			return UtenteDTO.buildUtenteDTOFromModel(utenteEntity);
 		}).collect(Collectors.toList());
