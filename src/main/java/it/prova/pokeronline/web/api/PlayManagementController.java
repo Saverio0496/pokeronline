@@ -87,7 +87,7 @@ public class PlayManagementController {
 			throw new CreditoMinimoInsufficienteException("Non possiedi abbastanza soldi per questo tavolo!");
 		}
 		if (!tavolo.getGiocatori().contains(giocatore))
-			tavoloService.aggiungiGiocatoreATavolo(idTavolo, idTavolo);
+			tavoloService.aggiungiGiocatoreATavolo(idTavolo, giocatore.getId());
 
 		giocatore.setCreditoAccumulato(giocatore.getCreditoAccumulato() + SimulazionePartita.simulaPartita());
 		if (giocatore.getCreditoAccumulato() < 0) {
