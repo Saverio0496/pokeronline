@@ -41,8 +41,9 @@ public class TavoloDTO {
 	@JsonIgnoreProperties(value = { "tavolo" })
 	private Long[] giocatoriIds;
 
-	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+	
 	@NotNull(message = "{utenteCreazione.notnull}")
+	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	private Utente utenteCreazione;
 
 	public Tavolo buildTavoloModel(boolean includeIdGiocatori) {
