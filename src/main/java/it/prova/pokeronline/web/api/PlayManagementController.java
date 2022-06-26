@@ -10,9 +10,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import it.prova.pokeronline.dto.TavoloDTO;
+import it.prova.pokeronline.gioca.SimulazionePartita;
+import it.prova.pokeronline.model.Tavolo;
 import it.prova.pokeronline.model.Utente;
 import it.prova.pokeronline.service.TavoloService;
 import it.prova.pokeronline.service.UtenteService;
+import it.prova.pokeronline.web.api.exception.CreditoMinimoInsufficienteException;
+import it.prova.pokeronline.web.api.exception.NonHaiAbbastanzaEsperienzaException;
 import it.prova.pokeronline.web.api.exception.TavoloNotFoundException;
 import it.prova.pokeronline.web.api.exception.UtenteNotFoundException;
 
@@ -64,7 +68,34 @@ public class PlayManagementController {
 	@GetMapping("/ricerca")
 	public List<TavoloDTO> ricerca() {
 		return TavoloDTO.createTavoloDTOListFromModelList(tavoloService.ricercaTavoli(
-				utenteService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName())));
+				utenteService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName())
+						.getEsperienzaAccumulata()));
+	}
+
+	@GetMapping("/giocaPartitaAQuelTavolo/{idTavolo}")
+	public Integer gioca(@PathVariable(value = "idTavolo", required = true) Long idTavolo) {
+
+		Utente giocatore = utenteService
+				.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+		Tavolo tavolo = tavoloService.caricaSingoloTavoloConGiocatori(idTavolo);
+
+		if (giocatore.getEsperienzaAccumulata() < tavolo.getEsperienzaMin()) {
+			throw new NonHaiAbbastanzaEsperienzaException("Non hai abbastanza esperienza per giocare a questo tavolo!");
+		}
+
+		if (giocatore.getCreditoAccumulato() < tavolo.getCifraMinima()) {
+			throw new CreditoMinimoInsufficienteException("Non possiedi abbastanza soldi per questo tavolo!");
+		}
+		if (!tavolo.getGiocatori().contains(giocatore))
+			tavoloService.aggiungiGiocatoreATavolo(idTavolo, idTavolo);
+
+		giocatore.setCreditoAccumulato(giocatore.getCreditoAccumulato() + SimulazionePartita.simulaPartita());
+		if (giocatore.getCreditoAccumulato() < 0) {
+			giocatore.setCreditoAccumulato(0);
+		}
+		utenteService.aggiorna(giocatore);
+
+		return giocatore.getCreditoAccumulato();
 	}
 
 }

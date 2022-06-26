@@ -92,4 +92,28 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 
 		return new ResponseEntity<>(body, HttpStatus.UNPROCESSABLE_ENTITY);
 	}
+
+	@ExceptionHandler(NonHaiAbbastanzaEsperienzaException.class)
+	public ResponseEntity<Object> handleNonHaiAbbastanzaEsperienzaException(NonHaiAbbastanzaEsperienzaException ex,
+			WebRequest request) {
+
+		Map<String, Object> body = new LinkedHashMap<>();
+		body.put("timestamp", LocalDateTime.now());
+		body.put("message", ex.getMessage());
+		body.put("status", HttpStatus.UNPROCESSABLE_ENTITY);
+
+		return new ResponseEntity<>(body, HttpStatus.UNPROCESSABLE_ENTITY);
+	}
+
+	@ExceptionHandler(CreditoMinimoInsufficienteException.class)
+	public ResponseEntity<Object> handleCreditoMinimoInsufficienteException(CreditoMinimoInsufficienteException ex,
+			WebRequest request) {
+
+		Map<String, Object> body = new LinkedHashMap<>();
+		body.put("timestamp", LocalDateTime.now());
+		body.put("message", ex.getMessage());
+		body.put("status", HttpStatus.UNPROCESSABLE_ENTITY);
+
+		return new ResponseEntity<>(body, HttpStatus.UNPROCESSABLE_ENTITY);
+	}
 }

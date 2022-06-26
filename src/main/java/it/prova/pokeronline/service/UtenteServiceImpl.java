@@ -57,6 +57,7 @@ public class UtenteServiceImpl implements UtenteService {
 		utenteInstance.setStato(StatoUtente.CREATO);
 		utenteInstance.setPassword(passwordEncoder.encode(utenteInstance.getPassword()));
 		utenteInstance.setDataRegistrazione(new Date());
+		utenteInstance.setEsperienzaAccumulata(0);
 		return repository.save(utenteInstance);
 	}
 

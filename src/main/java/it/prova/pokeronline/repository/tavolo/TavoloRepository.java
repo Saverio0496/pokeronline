@@ -27,10 +27,6 @@ public interface TavoloRepository extends CrudRepository<Tavolo, Long>, CustomTa
 	@Query("from Tavolo t join fetch t.giocatori g where g=:utente")
 	List<Tavolo> findTavoloDoveGiocatoreEPresente (Utente utente);
 	
-//	@Query("from Tavolo t where g=:utente and t.esperienzaMin <= :esperienzaAccumulata")
-//	List<Tavolo> findAllTavoliConEsperienzaMinoreOUgualeA(Utente utente,Integer esperienzaAccumulata);
-	
-	@EntityGraph(attributePaths = { "giocatori"})
 	List<Tavolo> findAllByEsperienzaMinIsLessThanEqual(Integer esperienzaAccumulata);
 
 }

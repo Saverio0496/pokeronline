@@ -9,10 +9,14 @@ import org.springframework.transaction.annotation.Transactional;
 import it.prova.pokeronline.model.Tavolo;
 import it.prova.pokeronline.model.Utente;
 import it.prova.pokeronline.repository.tavolo.TavoloRepository;
+import it.prova.pokeronline.repository.utente.UtenteRepository;
 import it.prova.pokeronline.web.api.exception.TavoloAncoraConGiocatoriException;
 
 @Service
 public class TavoloServiceImpl implements TavoloService {
+
+	@Autowired
+	UtenteRepository utenteRepository;
 
 	@Autowired
 	TavoloRepository tavoloRepository;
@@ -94,10 +98,18 @@ public class TavoloServiceImpl implements TavoloService {
 		tavolo.getGiocatori().remove(giocatore);
 		giocatore.setEsperienzaAccumulata(giocatore.getEsperienzaAccumulata() + 1);
 	}
-	
+
 	@Transactional
-	public List<Tavolo> ricercaTavoli(Utente utente) {
-		return tavoloRepository.findAllByEsperienzaMinIsLessThanEqual(utente.getEsperienzaAccumulata());
+	public List<Tavolo> ricercaTavoli(Integer esperienzaAccumulata) {
+		return tavoloRepository.findAllByEsperienzaMinIsLessThanEqual(esperienzaAccumulata);
+	}
+
+	@Transactional
+	public Tavolo aggiungiGiocatoreATavolo(Long idTavolo, Long idGiocatore) {
+		Utente utente = utenteRepository.findById(idGiocatore).orElse(null);
+		Tavolo tavolo = tavoloRepository.findById(idTavolo).orElse(null);
+		tavolo.getGiocatori().add(utente);
+		return tavoloRepository.save(tavolo);
 	}
 
 }
