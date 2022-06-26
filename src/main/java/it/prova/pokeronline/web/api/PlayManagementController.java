@@ -61,4 +61,10 @@ public class PlayManagementController {
 		tavoloService.abbandonaPartita(idTavolo, giocatoreCheVuoleAbbandonareIlTavolo);
 	}
 
+	@GetMapping("/ricerca")
+	public List<TavoloDTO> ricerca() {
+		return TavoloDTO.createTavoloDTOListFromModelList(tavoloService.ricercaTavoli(
+				utenteService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName())));
+	}
+
 }

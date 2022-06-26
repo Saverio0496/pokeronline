@@ -93,7 +93,11 @@ public class TavoloServiceImpl implements TavoloService {
 		}
 		tavolo.getGiocatori().remove(giocatore);
 		giocatore.setEsperienzaAccumulata(giocatore.getEsperienzaAccumulata() + 1);
-
+	}
+	
+	@Transactional
+	public List<Tavolo> ricercaTavoli(Utente utente) {
+		return tavoloRepository.findAllByEsperienzaMinIsLessThanEqual(utente.getEsperienzaAccumulata());
 	}
 
 }
