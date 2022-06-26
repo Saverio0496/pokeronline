@@ -29,5 +29,5 @@ public interface TavoloService {
 
 	Tavolo findByDenominazione(String denominazione);
 
-	Tavolo findTavoloByGiocatoreContains(Utente utente);
+	List<Tavolo> findTavoloByGiocatoreContains(Utente utente);
 }

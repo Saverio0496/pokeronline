@@ -81,8 +81,8 @@ public class TavoloServiceImpl implements TavoloService {
 	}
 	
 	@Transactional
-	public Tavolo findTavoloByGiocatoreContains(Utente utente) {
-		return tavoloRepository.findTavoloByGiocatoriContains(utente);
+	public List<Tavolo> findTavoloByGiocatoreContains(Utente utente) {
+		return tavoloRepository.findTavoloDoveGiocatoreEPresente(utente);
 	}
 
 }
