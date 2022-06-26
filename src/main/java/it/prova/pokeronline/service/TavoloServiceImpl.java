@@ -41,7 +41,7 @@ public class TavoloServiceImpl implements TavoloService {
 	public Tavolo caricaSingoloTavoloConGiocatori(Long id) {
 		return tavoloRepository.findByIdEagerGiocatori(id);
 	}
-	
+
 	@Transactional(readOnly = true)
 	public Tavolo caricaSingoloTavoloEager(Long id) {
 		return tavoloRepository.findByIdEager(id);
@@ -79,10 +79,21 @@ public class TavoloServiceImpl implements TavoloService {
 	public Tavolo findByDenominazione(String denominazione) {
 		return tavoloRepository.findByDenominazione(denominazione);
 	}
-	
+
 	@Transactional
 	public List<Tavolo> findTavoloByGiocatoreContains(Utente utente) {
 		return tavoloRepository.findTavoloDoveGiocatoreEPresente(utente);
+	}
+
+	@Transactional
+	public void abbandonaPartita(Long idTavolo, Utente giocatore) {
+		Tavolo tavolo = tavoloRepository.findById(idTavolo).orElse(null);
+		if (tavolo == null) {
+			return;
+		}
+		tavolo.getGiocatori().remove(giocatore);
+		giocatore.setEsperienzaAccumulata(giocatore.getEsperienzaAccumulata() + 1);
+
 	}
 
 }

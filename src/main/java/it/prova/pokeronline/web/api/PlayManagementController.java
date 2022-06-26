@@ -54,4 +54,11 @@ public class PlayManagementController {
 		return tavoliDoveUtenteEPresente;
 	}
 
+	@GetMapping("/abbandonaPartita/{idTavolo}")
+	public void abbandonaPartita(@PathVariable(value = "idTavolo", required = true) Long idTavolo) {
+		Utente giocatoreCheVuoleAbbandonareIlTavolo = utenteService
+				.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+		tavoloService.abbandonaPartita(idTavolo, giocatoreCheVuoleAbbandonareIlTavolo);
+	}
+
 }
